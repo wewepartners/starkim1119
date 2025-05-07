@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>홈페이지 입점 금액 계산기</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 30px;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-evenly;
+      gap: 10px;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .calculator .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100px; /* 각 항목의 너비를 좁게 설정 */
+    }
+
+    .calculator input {
+      width: 100%;
+      padding: 5px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 12px; /* 폰트 크기 줄이기 */
+      text-align: center;
+    }
+
+    .calculator .result {
+      width: 100%;
+      padding: 5px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 12px; /* 폰트 크기 줄이기 */
+      text-align: center;
+    }
+
+    .calculator .red {
+      color: red;
+      font-weight: bold;
+    }
+
+    .calculator .blue {
+      color: blue;
+      font-weight: bold;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .item label {
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .input-placeholder {
+      font-size: 12px;
+      color: #888; /* 회색으로 표시 */
+      text-align: center;
+    }
+
+    /* 네 번째, 다섯 번째, 여섯 번째 칸 숨기기 */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>홈페이지 입점 금액 계산기</h2>
+
+  <div class="calculator">
+    <div class="item">
+      <label>중국원가 (위안)</label>
+      <input type="number" id="chinaCost" placeholder="입력" onfocus="clearPlaceholder(this)" oninput="calculate()">
+    </div>
+    <div class="item">
+      <label>도매꾹판매가 (₩)</label>
+      <input type="number" id="salePrice" placeholder="입력" onfocus="clearPlaceholder(this)" oninput="calculate()">
+    </div>
+    <div class="item">
+      <label>수수료 8%</label>
+      <div id="afterFee" class="result">0</div>
+    </div>
+    
+    <!-- 네 번째, 다섯 번째, 여섯 번째 칸을 숨기기 위한 "hidden" 클래스를 추가 -->
+    <div class="item hidden">
+      <label>도_수-원가</label>
+      <div id="profit" class="result">0</div>
+    </div>
+    <div class="item hidden">
+      <label>4</label>
+      <div id="forty" class="result">0</div>
+    </div>
+    <div class="item hidden">
+      <label>6</label>
+      <div id="sixty" class="result">0</div>
+    </div>
+
+    <div class="item">
+      <label>납품 금액</label>
+      <div id="plusCost" class="result red">0</div>
+    </div>
+    <div class="item">
+      <label>홈페이지금액</label>
+      <div id="homepagePrice" class="result blue">0</div>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const chinaCost = parseFloat(document.getElementById('chinaCost').value) || 0;
+      const salePrice = parseFloat(document.getElementById('salePrice').value) || 0;
+
+      const chinaCostInWon = chinaCost * 300;
+      const afterFee = salePrice * 0.92;
+      const profit = afterFee - chinaCostInWon;
+      const forty = profit * 0.4;
+      const sixty = profit * 0.6;
+      const plusCost = forty + chinaCostInWon;
+      const homepagePrice = plusCost * 1.1;
+
+      document.getElementById('afterFee').innerText = Math.round(afterFee);
+      document.getElementById('profit').innerText = Math.round(profit);
+      document.getElementById('forty').innerText = Math.round(forty);
+      document.getElementById('sixty').innerText = Math.round(sixty);
+      document.getElementById('plusCost').innerText = Math.round(plusCost);
+      document.getElementById('homepagePrice').innerText = Math.round(homepagePrice);
+    }
+
+    // 입력 필드에 포커스가 있을 때 "입력" 텍스트를 제거하는 함수
+    function clearPlaceholder(inputElement) {
+      if (inputElement.placeholder === "입력") {
+        inputElement.placeholder = "";
+      }
+    }
+  </script>
+
+</body>
+</html>
